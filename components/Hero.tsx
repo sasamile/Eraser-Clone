@@ -89,7 +89,7 @@ function Hero() {
           builder
         </p>
         <RegisterLink>
-          <Button variant={"outline"} className="text-black p-6">
+          <Button variant={"outline"} className="text-black p-6 mt-4">
             Try Eraser
             <span>
               <ArrowRight className="w-4 h-4 ml-2" />

@@ -97,7 +97,7 @@ function SideNavTopSection({ user, setActiveTeamInfo }: SideNavTopProps) {
             ))}
             <LogoutLink>
               <div className="flex items-center gap-2 hover:bg-[#2A2B2B] p-2 rounded-md text-sm">
-                <LogOut />
+                <LogOut href="https://eraser-clone-ruddy.vercel.app/"/>
                 <h2 className="w-full text-[15px] truncate font-bold">
                   Logout
                 </h2>
