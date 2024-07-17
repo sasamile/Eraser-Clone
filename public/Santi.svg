@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.75 69.86">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 18px;
+        
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-5 {
+        fill: #D1730A;
+        stroke-width: 0px;
+      }
+
+      .cls-6 {
+        letter-spacing: -.05em;
+      }
+    </style>
+  </defs>
+  <path class="cls-5" d="M114.31,58.11c0,6.35-5.15,11.5-11.5,11.5H11.75c-6.36,0-11.51-5.15-11.51-11.5v-19c0-6.35,5.15-11.5,11.51-11.5h91.06c6.35,0,11.5,5.15,11.5,11.5v19Z"/>
+  <polygon class="cls-5" points="101.36 19.11 124.75 0 122.43 31.03 115.6 19.41 101.36 19.11"/>
+  <text class="cls-1" transform="translate(16.35 53.67)"><tspan x="0" y="0">Santiago</tspan><tspan class="cls-2" x="" y="0">.S</tspan></text>
+</svg>

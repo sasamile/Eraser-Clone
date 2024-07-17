@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.35 51.35">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-2 {
+        fill: #f8f7f7;
+
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 18px;
+      }
+
+      .cls-3 {
+        fill: #82bf68;
+        stroke: #69b42d;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-4 {
+        fill: #69b42e;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <polygon class="cls-3" points="4.72 15.05 .81 1.06 14.5 9.11 7.79 9.26 4.72 15.05" />
+  <path class="cls-4"
+    d="M105.11,19.61v28.28c0,1.77-1.44,3.21-3.21,3.21H14.92c-1.78,0-3.21-1.44-3.21-3.21v-28.28c0-1.77,1.43-3.21,3.21-3.21h86.98c1.77,0,3.21,1.44,3.21,3.21Z" />
+  <text class="cls-2" transform="translate(26.3 39.55)">
+    <tspan x="0" y="0">Laura.L</tspan>
+    
+    
+  </text>
+</svg>
