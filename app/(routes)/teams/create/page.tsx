@@ -24,61 +24,68 @@ function CreateTeams() {
 
   const createNewTeam = async () => {
     try {
+      if (!user?.id) {
+        toast.error("Usuario no autenticado");
+        route.push("/auth/sign-in");
+        return;
+      }
+
+      if (!teamName.trim()) {
+        toast.error("El nombre del equipo es requerido");
+        return;
+      }
+
       const resp = await createTeam({
-        name: teamName,
-        userId: user?.id || "",
+        name: teamName.trim(),
+        userId: user.id,
       });
 
       if (resp) {
-        toast.success("Team Created Successfully!");
-        setTimeout(() => {
-          route.push("/dashboard");
-        }, 2000);
+        toast.success("¡Equipo creado exitosamente!");
+        route.push("/dashboard");
       } else {
-        toast.error("Failed to create team");
+        toast.error("No se pudo crear el equipo. Por favor, intenta nuevamente.");
       }
     } catch (error) {
-      console.error("Error creating team:", error);
-      toast.error("Something went wrong");
+      console.error("Error al crear el equipo:", error);
+      toast.error("Ocurrió un error inesperado. Por favor, intenta más tarde.");
     }
   };
   return (
-    <div>
-      <div className="max-md:w-[80%] md:w-[95%] mx-auto mt-12">
+    <div className="min-h-screen p-4">
+      <div className="w-[90%] max-w-screen-xl mx-auto mt-8">
         <Image src="/logo.svg" width={140} height={100} alt="logo" />
       </div>
-      <div>
-        <div className="mt-9 flex flex-col  items-center">
-          <p className="bg-[#304A36FF] flex justify-center gap-2 items-center px-2 py-1 text-[#63B584] rounded-lg">
+      <div className="mt-6">
+        <div className="flex flex-col items-center px-4">
+          <p className="bg-[#304A36FF] flex justify-center gap-2 items-center px-3 py-1.5 text-[#63B584] rounded-lg text-sm">
             <span>
               <BsPeople />
             </span>
             Team Name
           </p>
-          <h1 className={`text-[40px] font-bold my-8 `}>
+          <h1 className="text-2xl md:text-[40px] font-bold my-4 md:my-8 text-center">
             What should we call your team?
           </h1>
-          <p className="text-[#A4A4A4] ">
+          <p className="text-[#A4A4A4] text-center text-sm md:text-base">
             You can always change this later from settings.
           </p>
-          <div className="w-[27%] mt-12">
-            <label className="font-bold">Team Name</label>
+          <div className="w-full max-w-md mt-8 px-4">
+            <label className="font-bold block mb-2">Team Name</label>
             <Input
               type="text"
               placeholder="Team Name"
-              className="bg-[#242424] my-4 py-4 "
+              className="bg-[#242424] py-6"
               onChange={(e) => setTeamName(e.target.value)}
             />
           </div>
-          <div className="mt-20">
+          <div className="mt-12 w-full max-w-md px-4">
             <Button
               size={"lg"}
               type="submit"
-              onClick={() => {
-                createNewTeam();
-              }}
-              disabled={!(teamName && teamName.length > 0)}
-              className="bg-blue-600 px-32 py-6 hover:bg-blue-700"
+              onClick={createNewTeam}
+              disabled={!teamName.trim()}
+              className="bg-blue-600 w-full py-6 hover:bg-blue-700"
             >
               Continue
             </Button>

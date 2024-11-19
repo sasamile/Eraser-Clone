@@ -30,12 +30,18 @@ function SideNavTopSection() {
     { id: 1, name: "Create Team", path: "/teams/create", icon: Users },
     { id: 2, name: "Settings", path: "", icon: Settings },
   ];
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+
   const [teams, setTeams] = useState<Team[]>([]);
 
   useEffect(() => {
     const fetchTeams = async () => {
       const teamsData = await getTeam();
       setTeams(teamsData ?? []);
+      // Establecer el equipo seleccionado por defecto
+      if (teamsData && teamsData.length > 0) {
+        setSelectedTeam(teamsData[0]);
+      }
     };
 
     fetchTeams();
@@ -47,19 +53,24 @@ function SideNavTopSection() {
         <PopoverTrigger>
           <div className="flex  items-center gap-2 hover:bg-[#2A2B2B] p-2 rounded-md">
             <Image src="/logo.sin.png" width={40} height={40} alt="logo" />
-            <h2 className="w-full  truncate font-bold">{teams[0]?.name}</h2>
+            <h2 className="w-full  truncate font-bold">
+              {" "}
+              {selectedTeam?.name || "Select Team"}
+            </h2>
             <ChevronDown />
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-56 bg-[#171717] text-white ml-4 outline-none">
           <div>
             {teams.map((team) => (
-              <h2
-                className="px-2 gap-3  text-sm rounded-md w-full  truncate font-bold cursor-pointer hover:bg-[#2A2B2B]"
+              <div
                 key={team.id}
+                className={`px-2 py-2 gap-3 text-sm rounded-md w-full truncate font-bold cursor-pointer hover:bg-[#2A2B2B] ${
+                  selectedTeam?.id === team.id ? "bg-[#2A2B2B]" : ""
+                }`}
               >
                 {team.name}
-              </h2>
+              </div>
             ))}
           </div>
           <Separator />
@@ -80,9 +91,7 @@ function SideNavTopSection() {
             <div onClick={() => signOut()}>
               <div className="flex items-center gap-2 hover:bg-[#2A2B2B] px-2 py-1 rounded-md text-sm cursor-pointer">
                 <LogOut />
-                <h2 className="w-full text-sm truncate font-bold">
-                  Logout
-                </h2>
+                <h2 className="w-full text-sm truncate font-bold">Logout</h2>
               </div>
             </div>
           </div>
@@ -110,6 +119,9 @@ function SideNavTopSection() {
       <Button
         variant={"outline"}
         className="w-full text-white bg-[#2A2B2B] hover:bg-[#2A2B2B] hover:text-white border-[2px] justify-start border-gray-400 gap-2 font-semibold mt-8"
+        onClick={() =>
+          selectedTeam && router.push(`/dashboard/${selectedTeam.id}/files`)
+        }
       >
         <LayoutGrid className="h-5 w-5" />
         All Files
