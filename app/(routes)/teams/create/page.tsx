@@ -1,13 +1,12 @@
 "use client";
+import { createTeam } from "@/actions/team";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/convex/_generated/api";
-import { oswald } from "@/lib/font";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useMutation } from "convex/react";
+import { db } from "@/lib/db";
+import { useCurrentUser } from "@/lib/use-current-user";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsPeople } from "react-icons/bs";
 
@@ -15,29 +14,34 @@ function CreateTeams() {
   const route = useRouter();
   const [teamName, setTeamName] = useState("");
 
+  const user = useCurrentUser();
 
-  const createTeams = useMutation(api.teams.createTeams);
-  const { user }: any = useKindeBrowserClient();
+  useEffect(() => {
+    if (!user) {
+      route.push("/auth/sign-in");
+    }
+  }, [user, route]);
 
-  const createNewTeam = () => {
-    createTeams({
-      teamName: teamName,
-      createBy: user?.email,
-    }).then((resp) => {
-      try {
-        if (resp) {
-          toast.success("Team Created Successfully!!!");
+  const createNewTeam = async () => {
+    try {
+      const resp = await createTeam({
+        name: teamName,
+        userId: user?.id || "",
+      });
 
-          setTimeout(() => {
-            route.push("/dashboard");
-          }, 2000);
-        }
-      } catch {
-        toast.error("Something went wrong");
+      if (resp) {
+        toast.success("Team Created Successfully!");
+        setTimeout(() => {
+          route.push("/dashboard");
+        }, 2000);
+      } else {
+        toast.error("Failed to create team");
       }
-    });
+    } catch (error) {
+      console.error("Error creating team:", error);
+      toast.error("Something went wrong");
+    }
   };
-
   return (
     <div>
       <div className="max-md:w-[80%] md:w-[95%] mx-auto mt-12">
@@ -51,7 +55,7 @@ function CreateTeams() {
             </span>
             Team Name
           </p>
-          <h1 className={`text-[40px] font-bold my-8 ${oswald.className}`}>
+          <h1 className={`text-[40px] font-bold my-8 `}>
             What should we call your team?
           </h1>
           <p className="text-[#A4A4A4] ">

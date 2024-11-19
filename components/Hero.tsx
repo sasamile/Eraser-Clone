@@ -8,8 +8,6 @@ import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { oswald } from "@/lib/font";
-import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 
 function Hero() {
   return (
@@ -80,7 +78,7 @@ function Hero() {
       </motion.div>
       {/**Texto principal */}
       <div className="text-white md:w-[700px] mx-auto text-center space-y-12">
-        <h1 className={cn(" text-5xl md:text-7xl font-bold", oswald.className)}>
+        <h1 className={cn(" text-5xl md:text-7xl font-bold font-Fira")}>
           <span className="text-[#94DBFF]">Documents & diagrams </span>
           for engineering teams
         </h1>
@@ -88,14 +86,14 @@ function Hero() {
           All-in-one markdown editor, collaborative canvas, and diagram-as-code
           builder
         </p>
-        <RegisterLink>
-          <Button variant={"outline"} className="text-black p-6 mt-4">
+        <Link href={"/auth/sign-up"}>
+          <Button variant={"outline"} className="text-black p-6 mt-8">
             Try Eraser
             <span>
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="w-4 h-4 " />
             </span>
           </Button>
-        </RegisterLink>
+        </Link>
       </div>
 
       {/**Bola Azul */}

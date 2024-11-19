@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Archive, Flag, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,9 +16,17 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
+import { createFile } from "@/actions/file";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useFiles } from "@/components/provider/file-context";
 
-function SideNavBottomSection({ onFileCreate, totalFiles }: any) {
+function SideNavBottomSection() {
   const [fileInput, setFileInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { filesCount, refreshFiles } = useFiles();
+  const router = useRouter();
+
   const menuList = [
     {
       id: 1,
@@ -37,6 +47,25 @@ function SideNavBottomSection({ onFileCreate, totalFiles }: any) {
       path: "",
     },
   ];
+  const handleFileCreate = async () => {
+    try {
+      setIsLoading(true);
+      const file = await createFile(fileInput);
+
+      if (file) {
+        toast.success("File created successfully!");
+        setFileInput("");
+        refreshFiles(); // Refresh file list
+      } else {
+        toast.error("Failed to create file");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -50,11 +79,10 @@ function SideNavBottomSection({ onFileCreate, totalFiles }: any) {
         </h2>
       ))}
 
-      {/* add new button File Button */}
       <Dialog>
         <DialogTrigger className="w-full" asChild>
           <Button
-            disabled={totalFiles === 5}
+            disabled={filesCount >= 5}
             className="w-full bg-blue-600 hover:bg-blue-700 justify-start mt-3"
           >
             New File
@@ -79,6 +107,7 @@ function SideNavBottomSection({ onFileCreate, totalFiles }: any) {
                 className="mt-3 text-black"
                 maxLength={16}
                 minLength={1}
+                value={fileInput}
                 onChange={(e) => setFileInput(e.target.value)}
               />
             </DialogDescription>
@@ -86,25 +115,22 @@ function SideNavBottomSection({ onFileCreate, totalFiles }: any) {
           <DialogFooter>
             <DialogClose asChild>
               <Button
-                disabled={!(fileInput && fileInput.length > 4)}
-                onClick={() => {
-                  onFileCreate(fileInput);
-                }}
-                className=" bg-blue-600 hover:bg-blue-700"
+                disabled={!(fileInput && fileInput.length > 4) || isLoading}
+                onClick={handleFileCreate}
+                className="bg-blue-600 hover:bg-blue-700"
               >
-                Create
+                {isLoading ? "Creating..." : "Create"}
               </Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/**Progress Bar */}
       <div className="h-4 w-full bg-[#4B4B4B] rounded-full mt-5">
-        <Progress value={(totalFiles * 100) / 5} />
+        <Progress value={(filesCount * 100) / 5} />
       </div>
       <h2 className="text-[12px] mt-3">
-        <strong> {totalFiles} </strong> Out of <strong> 5 </strong> files used
+        <strong>{filesCount}</strong> Out of <strong>5</strong> files used
       </h2>
       <h2 className="text-[12px] mt-1">
         Upgrade your plan for unlimited access.

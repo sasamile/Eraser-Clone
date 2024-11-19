@@ -2,16 +2,26 @@
 import Figure from "@/components/Figure";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import Loading from "@/components/Loading";
 
 export default function Home() {
-  const { user } = useKindeBrowserClient();
+  const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    if (session) {
+      router.push(DEFAULT_LOGIN_REDIRECT);
+    }
+  }, [session, router]);
 
+  // Si hay sesión, no renderizamos nada mientras se realiza la redirección
+  if (session) return <Loading />;
+
+  // Si no hay sesión, mostramos la página normal
   return (
     <div>
       <Header />

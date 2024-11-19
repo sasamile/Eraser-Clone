@@ -16,7 +16,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { CiMenuBurger } from "react-icons/ci";
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 
 const navbar = [
   { title: "Use cases", href: "/" },
@@ -78,7 +77,7 @@ function Header() {
             </ul>
           </nav>
           <div className="lg:flex gap-2  hidden ">
-            <LoginLink postLoginRedirectURL="/dashboard">
+            <Link href={"/auth/sign-in"}>
               <Button
                 variant={"ghost"}
                 className="hover:bg-inherit text-[13px]"
@@ -86,15 +85,15 @@ function Header() {
               >
                 Log in
               </Button>
-            </LoginLink>
-            <RegisterLink>
+            </Link>
+            <Link href={"/auth/sign-up"}>
               <Button variant={"outline"} className="text-black">
                 Try Eraser
                 <span>
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </span>
               </Button>
-            </RegisterLink>
+            </Link>
           </div>
           <div className="lg:hidden ">
             <Drawer>

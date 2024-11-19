@@ -1,14 +1,41 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import NextAuth from "next-auth";
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
+import { authConfig } from "./auth.config";
 
-export async function middleware(request: NextRequest) {
-  const { isAuthenticated } = getKindeServerSession();
-  if (!await isAuthenticated) {
-    return NextResponse.redirect(new URL("/api/auth/login?post_login_redirect_url=/dashboard", request.url));
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
+
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  
+  if (isApiAuthRoute) {
+    return undefined;
   }
-}
 
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return undefined;
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL("/auth/sign-in", nextUrl));
+  }
+
+  return undefined;
+});
+
+// Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

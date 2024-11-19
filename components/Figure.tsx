@@ -6,7 +6,7 @@ import { GrCut } from "react-icons/gr";
 import { cn } from "@/lib/utils";
 import { FileSearch2, FileStack, SquareFunction } from "lucide-react";
 import { BsWikipedia } from "react-icons/bs";
-import { lilita, oswald } from "@/lib/font";
+
 
 function Figure() {
   return (
@@ -98,7 +98,7 @@ function Figure() {
               <h1
                 className={cn(
                   " text-4xl md:text-6xl flex gap-5 max-md:justify-center text-white",
-                  oswald.className
+                  
                 )}
               >
                 Let’s work{" "}
@@ -215,7 +215,7 @@ function Figure() {
               For Developers
             </div>
             <div className="pt-8 ">
-              <h1 className={cn("text-6xl flex  text-white", lilita.className)}>
+              <h1 className={cn("text-6xl flex  text-white")}>
                 Designed by developers{" "}
                 <div className="bg-[#6C54BC] ml-4 px-2 text-center py-4 -mt-4">
                   <i>for developers</i>
@@ -294,7 +294,7 @@ function Figure() {
               <h1
                 className={cn(
                   "text-6xl flex gap-3 text-white items-center",
-                  oswald.className
+                  
                 )}
               >
                 Documentation you will
