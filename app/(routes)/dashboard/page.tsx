@@ -5,12 +5,12 @@ import FileList from "@/app/_components/FileList";
 
 function Dashboard() {
   return (
-    <>
-      <div className="p-8">
-        <HeaderDashboard />
+    <div className="h-full w-full p-4 md:p-8 overflow-hidden">
+      <HeaderDashboard />
+      <div className="mt-8 overflow-x-auto">
         <FileList />
       </div>
-    </>
+    </div>
   );
 }
 

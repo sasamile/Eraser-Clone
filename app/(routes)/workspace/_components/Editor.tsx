@@ -125,8 +125,8 @@ function Editor({
     saveData();
   }, [onSaveTrigger, fileId, isReady, onSaveComplete]);
   return (
-    <div className="mt-8">
-      <div id="editorjs" className="mx-10 text-white"></div>
+    <div className="h-full p-4">
+      <div id="editorjs" className="h-full text-white"></div>
     </div>
   );
 }

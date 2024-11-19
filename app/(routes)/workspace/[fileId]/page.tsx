@@ -41,7 +41,8 @@ function Workspace({ params }: { params: { fileId: string } }) {
   const [triggersave, setTriggersave] = useState(false);
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [saveCount, setSaveCount] = useState(0); // Movido aquí arriba
+  const [saveCount, setSaveCount] = useState(0);
+  const [activeView, setActiveView] = useState<'editor' | 'canvas'>('editor');
 
   const loadFileData = useCallback(async () => {
     if (!params.fileId) return;
@@ -76,7 +77,6 @@ function Workspace({ params }: { params: { fileId: string } }) {
 
   useEffect(() => {
     if (saveCount === 2) {
-      // Both Editor and Canvas have saved
       toast.success("All changes saved successfully");
       setSaveCount(0);
     }
@@ -91,10 +91,37 @@ function Workspace({ params }: { params: { fileId: string } }) {
   }
 
   return (
-    <div>
+    <div className="h-screen flex flex-col">
       <WorspaceHeader onSave={handleSave} fileName={fileData.name} />
-      <div className="grid grid-cols-1 md:grid-cols-2 h-screen overflow-y-auto">
-        <div className="h-full bg-[#121212ff] p-4 overflow-y-auto border-r border-gray-300">
+      
+      {/* Botones de navegación móvil */}
+      <div className="md:hidden flex w-full border-b border-gray-300">
+        <button
+          onClick={() => setActiveView('editor')}
+          className={`flex-1 p-2 text-sm font-medium ${
+            activeView === 'editor' 
+              ? 'bg-blue-500 text-white' 
+              : 'bg-gray-100 text-gray-700'
+          }`}
+        >
+          Editor
+        </button>
+        <button
+          onClick={() => setActiveView('canvas')}
+          className={`flex-1 p-2 text-sm font-medium ${
+            activeView === 'canvas' 
+              ? 'bg-blue-500 text-white' 
+              : 'bg-gray-100 text-gray-700'
+          }`}
+        >
+          Canvas
+        </button>
+      </div>
+
+      {/* Contenedor principal */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2">
+        <div className={`h-full bg-[#121212ff] border-r border-gray-300 
+          ${activeView === 'canvas' ? 'hidden md:block' : 'block'}`}>
           <Editor
             onSaveTrigger={triggersave}
             fileId={params.fileId}
@@ -102,7 +129,8 @@ function Workspace({ params }: { params: { fileId: string } }) {
             onSaveComplete={handleSaveComplete}
           />
         </div>
-        <div className="h-full overflow-y-auto">
+        <div className={`h-full 
+          ${activeView === 'editor' ? 'hidden md:block' : 'block'}`}>
           <Canvas
             onSaveTrigger={triggersave}
             fileId={params.fileId}

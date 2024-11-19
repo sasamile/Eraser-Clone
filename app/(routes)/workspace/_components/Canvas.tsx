@@ -73,7 +73,7 @@ function Canvas({
   }
 
   return (
-    <div style={{ height: "100%", backgroundColor: "#121212" }}>
+    <div className="h-full bg-[#121212]">
       <Excalidraw
         initialData={{
           elements: elements,

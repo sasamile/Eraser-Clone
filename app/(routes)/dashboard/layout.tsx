@@ -45,12 +45,12 @@ function LayoutDashboard({ children }: { children: React.ReactNode }) {
 
   return (
     <FileProvider>
-      <div>
-        <div className="grid grid-cols-4">
-          <div className="fixed h-screen w-72">
+      <div className="min-h-screen bg-[#171717]">
+        <div className="flex">
+          <aside className="md:w-72 shrink-0">
             <SideNav />
-          </div>
-          <div className="col-span-4 ml-72">{children}</div>
+          </aside>
+          <main className="flex-1 w-full overflow-hidden">{children}</main>
         </div>
       </div>
     </FileProvider>
