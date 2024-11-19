@@ -26,10 +26,6 @@ interface Team {
 function SideNavTopSection() {
   const user = useCurrentUser();
   const router = useRouter();
-  const menu = [
-    { id: 1, name: "Create Team", path: "/teams/create", icon: Users },
-    { id: 2, name: "Settings", path: "", icon: Settings },
-  ];
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
 
   const [teams, setTeams] = useState<Team[]>([]);
@@ -61,33 +57,9 @@ function SideNavTopSection() {
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-56 bg-[#171717] text-white ml-4 outline-none">
-          <div>
-            {teams.map((team) => (
-              <div
-                key={team.id}
-                className={`px-2 py-2 gap-3 text-sm rounded-md w-full truncate font-bold cursor-pointer hover:bg-[#2A2B2B] ${
-                  selectedTeam?.id === team.id ? "bg-[#2A2B2B]" : ""
-                }`}
-              >
-                {team.name}
-              </div>
-            ))}
-          </div>
-          <Separator />
           {/* Option Section */}
           <div className=" flex flex-col gap-1 mt-2 text-sm">
-            {menu.map((item) => (
-              <h2
-                key={item.id}
-                className="flex items-center gap-2  py-1 text-sm hover:bg-[#2A2B2B] px-2 rounded-md cursor-pointer"
-                onClick={() => router.push(item.path)}
-              >
-                <item.icon />
-                <h2 className="w-full text-sm truncate font-bold">
-                  {item.name}
-                </h2>
-              </h2>
-            ))}
+        
             <div onClick={() => signOut()}>
               <div className="flex items-center gap-2 hover:bg-[#2A2B2B] px-2 py-1 rounded-md text-sm cursor-pointer">
                 <LogOut />
