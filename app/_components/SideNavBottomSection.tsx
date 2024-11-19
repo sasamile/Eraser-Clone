@@ -131,7 +131,7 @@ function SideNavBottomSection() {
       </div>
       <h2 className="text-[12px] mt-3">
         <strong>{filesCount}</strong> Out of <strong>5</strong> files used
-      </h2>
+      </h2> 
       <h2 className="text-[12px] mt-1">
         Upgrade your plan for unlimited access.
       </h2>

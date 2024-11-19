@@ -7,6 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import {
   Table,
@@ -22,9 +32,11 @@ import { Button } from "@/components/ui/button";
 import moment from "moment";
 import { Archive, MoreHorizontal, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getFiles, getFilesWithCount } from "@/actions/file";
+import { createFile, getFiles, getFilesWithCount } from "@/actions/file";
 import { useCurrentUser } from "@/lib/use-current-user";
 import { useFiles } from "@/components/provider/file-context";
+import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input";
 
 interface File {
   id: string;
@@ -64,6 +76,36 @@ function FileList() {
     router.push(`/workspace/${fileId}`);
   };
 
+  const [fileInput, setFileInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { filesCount, refreshFiles } = useFiles();
+
+  const handleFileCreate = async () => {
+    try {
+      setIsLoading(true);
+      const file = await createFile(fileInput);
+
+      if (file) {
+        toast.success("File created successfully!");
+        setFileInput("");
+        // Cargar los archivos inmediatamente después de crear uno nuevo
+        const data = await getFilesWithCount();
+        if (data) {
+          setFiles(data.files);
+          setFilesCount(data.count);
+        }
+        refreshFiles(); // Mantener para consistencia con el contexto global
+      } else {
+        toast.error("Failed to create file");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="mt-8 w-full">
       {!files.length ? (
@@ -78,12 +120,49 @@ function FileList() {
             Create your first file to get started. You can create files and
             organize them in your workspace.
           </p>
-          <Button
-            onClick={() => router.push("/teams/create")}
-            className="bg-primary hover:bg-primary/90"
-          >
-            Create New File
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button disabled={filesCount >= 5} className="justify-start mt-3">
+                New File
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-[#171717]">
+              <DialogHeader>
+                <DialogTitle>
+                  <div className="flex gap-4">
+                    <Image
+                      src={"/logo.sin.png"}
+                      width={30}
+                      height={30}
+                      alt="logo sin letras"
+                    />
+                    <h2>Create New File</h2>
+                  </div>
+                </DialogTitle>
+                <DialogDescription>
+                  <Input
+                    placeholder="Enter File Name"
+                    className="mt-3 text-black"
+                    maxLength={16}
+                    minLength={1}
+                    value={fileInput}
+                    onChange={(e) => setFileInput(e.target.value)}
+                  />
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    disabled={!(fileInput && fileInput.length > 4) || isLoading}
+                    onClick={handleFileCreate}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {isLoading ? "Creating..." : "Create"}
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       ) : (
         <div className="w-full overflow-x-auto">
