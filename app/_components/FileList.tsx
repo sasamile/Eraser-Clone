@@ -79,7 +79,7 @@ function FileList() {
             organize them in your workspace.
           </p>
           <Button
-            onClick={() => router.push("/workspace/new")}
+            onClick={() => router.push("/teams/create")}
             className="bg-primary hover:bg-primary/90"
           >
             Create New File
